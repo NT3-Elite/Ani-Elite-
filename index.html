@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mukammal React Artifact</title>
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0b;
+    --bg-soft:#111113;
+    --surface:rgba(255,255,255,0.03);
+    --surface-2:rgba(255,255,255,0.06);
+    --border:rgba(255,255,255,0.08);
+    --text:#ffffff;
+    --text-dim:rgba(255,255,255,0.6);
+    --accent:#7C3AED;
+    --accent-2:#A78BFA;
+    --blue:#3B82F6;
+    --green:#34D399;
+  }
+  *{ box-sizing:border-box; }
+  html, body{ margin:0; padding:0; }
+  body{
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,58,237,0.18), transparent 110%),
+      radial-gradient(circle at 20% 80%, rgba(59,130,246,0.10), transparent 40%),
+      var(--bg);
+    color: var(--text);
+    font-family:'Sora', system-ui, -apple-system, sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  code, pre, kbd, samp{
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+  }
+  /* Grid background */
+  .grid-bg::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size:48px 48px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 60%, transparent 110%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 60%, transparent 110%);
+    pointer-events:none;
+    z-index:0;
+  }
+  .glass{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  .glow-accent{
+    box-shadow: 0 0 24px rgba(124,58,237,0.35), 0 0 60px rgba(124,58,237,0.15);
+  }
+  .gradient-text{
+    background: linear-gradient(135deg, #fff 0%, #A78BFA 60%, #7C3AED 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .btn-primary{
+    background: linear-gradient(135deg, #7C3AED, #6D28D9);
+    transition: all .25s ease;
+    box-shadow: 0 4px 20px rgba(124,58,237,0.35);
+  }
+  .btn-primary:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(124,58,237,0.55);
+  }
+  .btn-ghost{
+    border:1px solid var(--border);
+    background: var(--surface);
+    transition: all .25s ease;
+  }
+  .btn-ghost:hover{
+    background: var(--surface-2);
+    border-color: rgba(255,255,255,0.18);
+  }
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
+    border:1px solid var(--border);
+    border-radius:20px;
+    transition: all .3s ease;
+  }
+  .card:hover{
+    border-color: rgba(124,58,237,0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(124,58,237,0.15);
+  }
+  .dot-live{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 10px var(--green);
+    animation: pulse-dot 2s infinite;
+  }
+  @keyframes pulse-dot{
+    0%,100%{ opacity:1; transform:scale(1); }
+    50%{ opacity:.5; transform:scale(1.2); }
+  }
+  .float{ animation: float 6s ease-in-out infinite; }
+  @keyframes float{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-12px); }
+  }
+  .fade-in{ animation: fadeIn .8s ease forwards; }
+  @keyframes fadeIn{
+    from{ opacity:0; transform:translateY(20px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  ::-webkit-scrollbar{ width:10px; }
+  ::-webkit-scrollbar-track{ background:var(--bg); }
+  ::-webkit-scrollbar-thumb{
+    background: linear-gradient(#7C3AED, #3B82F6);
+    border-radius:10px;
+  }
+</style>
+</head>
+<body class="grid-bg">
+  <!-- ================= NAVBAR ================= -->
+  <header class="sticky top-0 z-50 backdrop-blur-xl bg-[#0a0a0b]/70 border-b border-white/[0.06]">
+    <nav class="max-w-[1320px] mx-auto px-6 h-[64px] flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-[12px] bg-gradient-to-br from-[#7C3AED] to-[#3B82F6] grid place-items-center glow-accent">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" fill="#fff"/>
+          </svg>
+        </div>
+        <span class="text-[16px] font-[700] tracking-[-0.02em]">Artifact<span class="text-[#A78BFA]">.ai</span></span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-[14px] text-white/60">
+        <a href="#features" class="hover:text-white transition">Imkoniyatlar</a>
+        <a href="#pricing" class="hover:text-white transition">Narxlar</a>
+        <a href="#docs" class="hover:text-white transition">Hujjatlar</a>
+        <a href="#about" class="hover:text-white transition">Biz haqimizda</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="hidden sm:inline-flex btn-ghost text-[14px] px-4 py-2 rounded-[10px] text-white/80">
+          Kirish
+        </button>
+        <button class="btn-primary text-[14px] font-[600] px-4 py-2 rounded-[10px] text-white">
+          Boshlash
+        </button>
+      </div>
+    </nav>
+  </header>
+  <!-- ================= HERO ================= -->
+  <main class="relative z-10">
+    <section class="max-w-[1320px] mx-auto px-6 pt-20 pb-24 text-center fade-in">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass text-[12px] text-white/70 mb-8">
+        <span class="dot-live"></span>
+        <span>Yangi versiya 2.0 chiqdi</span>
+      </div>
+      <h1 class="text-[42px] md:text-[64px] leading-[1.05] font-[800] tracking-[-0.04em] max-w-[900px] mx-auto">
+        <span class="gradient-text">Mukammal</span> mahsulotlar<br>
+        yarating — <span class="gradient-text">tezroq</span>
+      </h1>
+      <p class="mt-6 text-[16px] md:text-[18px] text-white/60 leading-[1.7] max-w-[560px] mx-auto">
+        Zamonaviy dizayn, kuchli funksiyalar va cheksiz imkoniyatlar bir joyda.
+        Kod yozishni boshlang va natijaga bir necha daqiqada erishing.
+      </p>
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <button class="btn-primary text-[15px] font-[600] px-6 h-[52px] rounded-[14px] text-white flex items-center gap-2">
+          Bepul boshlash
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="btn-ghost text-[15px] font-[600] px-6 h-[52px] rounded-[14px] text-white/80 flex items-center gap-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          Demo ko'rish
+        </button>
+      </div>
+      <!-- Stats -->
+      <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-[900px] mx-auto">
+        <div class="glass rounded-[16px] p-5">
+          <div class="text-[28px] font-[800] gradient-text">10K+</div>
+          <div class="text-[13px] text-white/50 mt-1">Faol foydalanuvchi</div>
+        </div>
+        <div class="glass rounded-[16px] p-5">
+          <div class="text-[28px] font-[800] gradient-text">99.9%</div>
+          <div class="text-[13px] text-white/50 mt-1">Ishonchlilik</div>
+        </div>
+        <div class="glass rounded-[16px] p-5">
+          <div class="text-[28px] font-[800] gradient-text">24/7</div>
+          <div class="text-[13px] text-white/50 mt-1">Qo'llab-quvvatlash</div>
+        </div>
+        <div class="glass rounded-[16px] p-5">
+          <div class="text-[28px] font-[800] gradient-text">50ms</div>
+          <div class="text-[13px] text-white/50 mt-1">Javob vaqti</div>
+        </div>
+      </div>
+    </section>
+    <!-- ================= FEATURES ================= -->
+    <section id="features" class="max-w-[1320px] mx-auto px-6 py-20">
+      <div class="text-center mb-16">
+        <h2 class="text-[28px] md:text-[40px] font-[800] tracking-[-0.02em]">
+          Nega <span class="gradient-text">bizni</span> tanlashadi?
+        </h2>
+        <p class="mt-4 text-[15px] text-white/50 max-w-[520px] mx-auto">
+          Har bir detal o'ylangan — sizga eng yaxshi tajribani taqdim etish uchun.
+        </p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Feature 1 -->
+        <div class="card p-6">
+          <div class="w-12 h-12 rounded-[14px] bg-[#7C3AED]/15 border border-[#7C3AED]/40 grid place-items-center mb-5">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2">
+              <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="text-[18px] font-[700] mb-2">Tezkor ishlash</h3>
+          <p class="text-[14px] text-white/50 leading-[1.7]">
+            Eng zamonaviy texnologiyalar bilan qurilgan — hech qanday kechikish yo'q.
+          </p>
+        </div>
+        <!-- Feature 2 -->
+        <div class="card p-6">
+          <div class="w-12 h-12 rounded-[14px] bg-[#3B82F6]/10 border border-[#3B82F6]/20 grid place-items-center mb-5">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="3"/>
+              <path d="M9 9h6v6H9z"/>
+            </svg>
+          </div>
+          <h3 class="text-[18px] font-[700] mb-2">Xavfsizlik</h3>
+          <p class="text-[14px] text-white/50 leading-[1.7]">
+            Ma'lumotlaringiz shifrlangan va to'liq himoyalangan holda saqlanadi.
+          </p>
+        </div>
+        <!-- Feature 3 -->
+        <div class="card p-6">
+          <div class="w-12 h-12 rounded-[14px] bg-emerald-500/10 border border-emerald-500/20 grid place-items-center mb-5">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="2">
+              <path d="M12 2v20M2 12h20" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="text-[18px] font-[700] mb-2">Cheksiz imkoniyat</h3>
+          <p class="text-[14px] text-white/50 leading-[1.7]">
+            Har qanday loyihaga moslasha oladigan moslashuvchan platforma.
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- ================= PRICING ================= -->
+    <section id="pricing" class="max-w-[1320px] mx-auto px-6 py-20">
+      <div class="text-center mb-16">
+        <h2 class="text-[28px] md:text-[40px] font-[800] tracking-[-0.02em]">
+          O'zingizga <span class="gradient-text">mosini</span> tanlang
+        </h2>
+        <p class="mt-4 text-[15px] text-white/50 max-w-[520px] mx-auto">
+          Yashirin to'lovlar yo'q. Har qanday vaqtda bekor qilish mumkin.
+        </p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Starter -->
+        <div class="card p-6 flex flex-col">
+          <div class="text-[14px] text-white/50 mb-2">Boshlang'ich</div>
+          <div class="text-[36px] font-[800] mb-1">$0<span class="text-[15px] text-white/40 font-[400]">/oy</span></div>
+          <p class="text-[13px] text-white/40 mb-6">Sinab ko'rish uchun</p>
+          <ul class="space-y-3 mb-8 flex-1 text-[14px] text-white/70">
+            <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> 5 ta loyiha</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Asosiy funksiyalar</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Hamjamiyat yordami</li>
+          </ul>
+          <button class="btn-ghost w-full py-3 rounded-[12px] text-[14px] font-[600] text-white/80">
+            Boshlash
+          </button>
+        </div>
+        <!-- Pro (featured) -->
+        <div class="relative rounded-[20px] p-[1.5px] bg-gradient-to-b from-[#7C3AED] to-transparent">
+          <div class="bg-[#0E0E10] rounded-[19px] p-6 flex flex-col">
+            <div class="absolute top-3 right-3 bg-[#7C3AED] text-[10px] font-[700] uppercase tracking-widest px-2.5 py-1 rounded-full">
+              Mashhur
+            </div>
+            <div class="text-[14px] text-[#A78BFA] mb-2">Professional</div>
+            <div class="text-[36px] font-[800] mb-1">$29<span class="text-[15px] text-white/40 font-[400]">/oy</span></div>
+            <p class="text-[13px] text-white/40 mb-6">Jiddiy loyihalar uchun</p>
+            <ul class="space-y-3 mb-8 flex-1 text-[14px] text-white/70">
+              <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Cheksiz loyihalar</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Barcha funksiyalar</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Ustuvor qo'llab-quvvatlash</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Analitika paneli</li>
+            </ul>
+            <button class="btn-primary w-full py-3 rounded-[12px] text-[14px] font-[700] text-white">
+              Tanlash
+            </button>
+          </div>
+        </div>
+        <!-- Enterprise -->
+        <div class="card p-6 flex flex-col">
+          <div class="text-[14px] text-white/50 mb-2">Korporativ</div>
+          <div class="text-[36px] font-[800] mb-1">$99<span class="text-[15px] text-white/40 font-[400]">/oy</span></div>
+          <p class="text-[13px] text-white/40 mb-6">Katta jamoalar uchun</p>
+          <ul class="space-y-3 mb-8 flex-1 text-[14px] text-white/70">
+            <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Pro + hamma narsa</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Shaxsiy menejer</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> SLA kafolati</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Maxsus integratsiya</li>
+          </ul>
+          <button class="btn-ghost w-full py-3 rounded-[12px] text-[14px] font-[600] text-white/80">
+            Bog'lanish
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- ================= CTA ================= -->
+    <section class="max-w-[1320px] mx-auto px-6 py-20">
+      <div class="relative rounded-[28px] p-12 text-center overflow-hidden glass">
+        <div class="absolute -top-[30%] left-[30%] w-[600px] h-[600px] bg-[#7C3AED] opacity-[0.18] blur-[140px] pointer-events-none"></div>
+        <div class="absolute bottom-[10%] right-[5%] w-[320px] h-[320px] bg-[#3B82F6] opacity-[0.10] blur-[130px] pointer-events-none"></div>
+        <div class="relative z-10">
+          <h2 class="text-[28px] md:text-[42px] font-[800] tracking-[-0.02em] mb-4">
+            Bugun <span class="gradient-text">boshlang</span>
+          </h2>
+          <p class="text-[15px] text-white/60 max-w-[520px] mx-auto mb-8 leading-[1.7]">
+            Kredit karta talab qilinmaydi. Bepul rejada cheksiz sinab ko'ring.
+          </p>
+          <button class="btn-primary text-[15px] font-[700] px-8 h-[56px] rounded-[16px] text-white">
+            Bepul ro'yxatdan o'tish
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- ================= FOOTER ================= -->
+  <footer class="relative z-10 border-t border-white/[0.06] mt-10">
+    <div class="max-w-[1320px] mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded-[8px] bg-gradient-to-br from-[#7C3AED] to-[#3B82F6] grid place-items-center">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" fill="#fff"/>
+          </svg>
+        </div>
+        <span class="text-[13px] text-white/50">© 2026 Artifact.ai — Barcha huquqlar himoyalangan</span>
+      </div>
+      <div class="flex items-center gap-6 text-[13px] text-white/40">
+        <a href="#" class="hover:text-white transition">Maxfiylik</a>
+        <a href="#" class="hover:text-white transition">Shartlar</a>
+        <a href="#" class="hover:text-white transition">Aloqa</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
